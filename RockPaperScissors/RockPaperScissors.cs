@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+using System;
 
 namespace RockPaperScissors
 {
@@ -11,66 +10,115 @@ namespace RockPaperScissors
             const string Paper = "Paper";
             const string Scissors = "Scissors";
 
-            Console.Write("Choose one of: [r]ock, [p]aper or [s]cissors: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
             string playerChoose = string.Empty;
 
-            while (true)
-            {
-                playerChoose = Console.ReadLine();
+            bool endGame = false;
 
-                if (playerChoose == "r" || playerChoose == "rock")
+            int playerScore = 0;
+            int computerScore = 0;
+            int drawGamens = 0;
+
+            while (!endGame)
+            {
+                while (!endGame)
                 {
-                    playerChoose = Rock;
-                    break;
+                    Console.Write("Choose one of: [r]ock, [p]aper or [s]cissors: ");
+                    playerChoose = Console.ReadLine().ToLower();
+
+                    if (playerChoose == "r" || playerChoose == "rock")
+                    {
+                        playerChoose = Rock;
+                        break;
+                    }
+                    else if (playerChoose == "p" || playerChoose == "paper")
+                    {
+                        playerChoose = Paper;
+                        break;
+                    }
+                    else if (playerChoose == "s" || playerChoose == "scissors")
+                    {
+                        playerChoose = Scissors;
+                        break;
+                    }
+                    else
+                    {
+                        Console.Write("Invalid input. Please choose again: ");
+                    }
                 }
-                else if (playerChoose == "p" || playerChoose == "paper")
+                Console.ResetColor();
+
+                Random randomNumber = new Random();
+                int computerRandomNumber = randomNumber.Next(1, 4);
+                string computerChoose = string.Empty;
+
+                switch (computerRandomNumber)
                 {
-                    playerChoose = Paper;
-                    break;
+                    case 1:
+                        computerChoose = Rock;
+                        break;
+                    case 2:
+                        computerChoose = Paper;
+                        break;
+                    case 3:
+                        computerChoose = Scissors;
+                        break;
                 }
-                else if (playerChoose == "s" || playerChoose == "scissors")
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"You choose {playerChoose}");
+                Console.WriteLine($"Computer choose {computerChoose}");
+                Console.ResetColor();
+
+                if (playerChoose == computerChoose)
                 {
-                    playerChoose = Scissors;
-                    break;
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.WriteLine("This game was a draw.");
+                    drawGamens++;
+                }
+                else if ((playerChoose == Rock && computerChoose == Scissors) || (playerChoose == Paper && computerChoose == Rock) || (playerChoose == Scissors && computerChoose == Paper))
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("You win.");
+                    playerScore++;
                 }
                 else
                 {
-                    Console.Write("Invalid input. Please choose again: ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("You lose.");
+                    computerScore++;
+                }
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write("Type [y]es to play again or [n]o to quit: ");
+                string type = Console.ReadLine().ToLower();
+
+                while (!endGame)
+                {
+                    if (type == "y" || type == "yes")
+                    {
+                        break;
+                    }
+                    else if (type == "n" || type == "no")
+                    {
+                        endGame = true;
+                        break;
+                    }
+                    else
+                    {
+                        Console.Write("Invalid input. Please try again: ");
+                        type = Console.ReadLine().ToLower();
+                    }
                 }
             }
-
-            Random randomNumber = new Random();
-            int computerRandomNumber = randomNumber.Next(1, 4);
-            string computerChoose = string.Empty;
-
-            switch (computerRandomNumber)
-            {
-                case 1:
-                    computerChoose = Rock;
-                    break;
-                case 2:
-                    computerChoose = Paper;
-                    break;
-                case 3:
-                    computerChoose = Scissors;
-                    break;
-            }
-
-            Console.WriteLine($"You choose {playerChoose}");
-            Console.WriteLine($"Computer choose {computerChoose}");
-
-            if (playerChoose == computerChoose)
-            {
-                Console.WriteLine("This game was a draw.");
-            }
-            else if ((playerChoose == Rock && computerChoose == Scissors) || (playerChoose == Paper && computerChoose == Rock) || (playerChoose == Scissors && computerChoose == Paper))
-            {
-                Console.WriteLine("You win.");
-            }
-            else
-            {
-                Console.WriteLine("You lose.");
-            }
+            Console.WriteLine("You choose to quit.");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Your score is {playerScore}");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Computer score is {computerScore}");
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine($"Draw games {drawGamens}");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Thank you for playing!");
         }
     }
 }
